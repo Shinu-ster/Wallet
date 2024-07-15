@@ -4,8 +4,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import WalletIcon from '@mui/icons-material/Wallet';
+import { Link } from 'react-router-dom';
 
 export default function Navbar(){
     return (
@@ -20,13 +20,26 @@ export default function Navbar(){
             aria-label="menu"
             sx={{ mr: 2 }}
           >
+            <Link to="/home" style={{color:"white"}}>
             <WalletIcon />
+            </Link>
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            
+            <Link to="/home" style={{textDecoration:"none",color:"white"}}>
+
             Wallet
+            </Link>
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit">
+            <Link to="/login" style={{textDecoration:"none",color:"white"}}>
+              Login
+              </Link>           
+            </Button>
+            <Button color="inherit">
+            <Link to="/register" style={{textDecoration:"none",color:"white"}}>
+              Register
+              </Link>           
+            </Button>
         </Toolbar>
       </AppBar>
     </Box>

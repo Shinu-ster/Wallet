@@ -1,6 +1,7 @@
 import { Box, Button, Container, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const validationSchema = yup.object({
@@ -12,6 +13,7 @@ const validationSchema = yup.object({
 });
 
 export default function Login() {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -31,6 +33,7 @@ export default function Login() {
         const data = await response.json();
         if (response.ok) {
           alert(JSON.stringify(data.status))
+          navigate('/home')
         }
       } catch (error) {
         console.log('Error',error)
@@ -78,7 +81,7 @@ export default function Login() {
             variant="outlined"
             fullWidth
           />
-          <Button color="primary" variant="contained" fullWidth type="submit">
+          <Button color="primary" variant="contained" fullWidth type="submit" sx={{ml:1}}>
             Submit
           </Button>
         </form>

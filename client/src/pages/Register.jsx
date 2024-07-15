@@ -1,6 +1,8 @@
 import {Box, Button, Container, TextField} from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const validationSchema = yup.object({
     name:yup.string("Enter your name").required("Name is required"),
@@ -14,6 +16,7 @@ const validationSchema = yup.object({
 
 
 export default function Register(){
+  const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues:{
@@ -36,13 +39,17 @@ export default function Register(){
                 const data = await response.json();
                 if (response.ok) {
                     alert(JSON.stringify(data.status))
+                    navigate('/login');
                 }
             } catch (error) {
                 console.log('Error',error)
             }
+            If
         }
     })
     return (
+      <>
+      <Navbar/>
         <Container maxWidth="sm">
           <Box
             sx={{
@@ -102,11 +109,12 @@ export default function Register(){
                 fullWidth
                 type="text"
               />
-              <Button color="primary" variant="contained" fullWidth type="submit">
+              <Button color="primary" variant="contained" fullWidth type="submit" sx={{ml:1}}>
                 Submit
               </Button>
             </form>
           </Box>
         </Container>
+        </>
       );
 }

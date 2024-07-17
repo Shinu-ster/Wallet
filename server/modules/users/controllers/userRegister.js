@@ -17,7 +17,7 @@ const userRegister = async (req,res)=>{
     } catch (error) {
         res.status(400).json({
             status:"Failed",
-            message:e.message
+            message:error
         })
         return;
     }

@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./modules/users/users.routes");
 const cors = require('cors');
+const incomeRouter = require("./modules/income/income.routes");
 const app = express();
 require("dotenv").config();
 
@@ -20,6 +21,8 @@ mongoose
   app.use(cors());
   app.use(express.json());
   app.use("/users",userRouter);
+  app.use("/income",incomeRouter);
+
   
 
 app.listen(8000, () => {

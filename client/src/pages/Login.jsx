@@ -33,6 +33,8 @@ export default function Login() {
         const data = await response.json();
         if (response.ok) {
           alert(JSON.stringify(data.status))
+          console.log(JSON.stringify(data));
+          localStorage.setItem('at',data.accessToken)
           navigate('/home')
         }
       } catch (error) {

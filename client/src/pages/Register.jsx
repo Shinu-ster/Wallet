@@ -44,7 +44,7 @@ export default function Register(){
             } catch (error) {
                 console.log('Error',error)
             }
-            If
+            
         }
     })
     return (

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const userRouter = require("./modules/users/users.routes");
 const cors = require('cors');
 const incomeRouter = require("./modules/income/income.routes");
+const expenseRouter = require("./modules/expenses/expense.routes");
 const app = express();
 require("dotenv").config();
 
@@ -22,6 +23,8 @@ mongoose
   app.use(express.json());
   app.use("/users",userRouter);
   app.use("/income",incomeRouter);
+  app.use("/expense",expenseRouter);
+
 
   
 

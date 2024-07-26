@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 
-const addIncome = async(req,res)=>{
+const addExpense = async(req,res)=>{
 
     const {amount,remark} = req.body;
     const Users = mongoose.model("users");
@@ -23,16 +23,16 @@ const addIncome = async(req,res)=>{
     },{
         $inc:{
 
-            balance:amount
+            balance:amount * -1
         }
     },{
         runValidators:true
     })
 
     res.status(200).json({
-        status:"Income was updated"
+        status:"Expense was added"
     })
 
 }
 
-module.exports = addIncome;
+module.exports = addExpense;

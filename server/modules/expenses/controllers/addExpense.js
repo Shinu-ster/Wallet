@@ -3,8 +3,9 @@ const mongoose = require("mongoose");
 
 const addExpense = async(req,res)=>{
 
-    const {amount,remark} = req.body;
+    const {amount,remark,transaction_type} = req.body;
     const Users = mongoose.model("users");
+    const Transactions = mongoose.model("transactions");
 
     try {
         if(!amount || !remark) throw "Please enter both amount and remark";
@@ -18,16 +19,34 @@ const addExpense = async(req,res)=>{
         return;
     }
 
-    await Users.updateOne({
-        _id:req.user._id
-    },{
-        $inc:{
-
-            balance:amount * -1
-        }
-    },{
-        runValidators:true
-    })
+    try {
+        await Transactions.create({
+          amount: amount,
+          remark: remark,
+          user_id: req.user._id,
+          transaction_type,
+        });
+        await Users.updateOne(
+          {
+            _id: req.user._id,
+          },
+          {
+            $inc: {
+              balance: amount * -1,
+            },
+          },
+          {
+            runValidators: true,
+          }
+        );
+      } catch (e) {
+        res.status(400).json({
+          status: "Failed",
+          message: e.message,
+        });
+        return;
+      }
+    
 
     res.status(200).json({
         status:"Expense was added"

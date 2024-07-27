@@ -8,6 +8,7 @@ const app = express();
 require("dotenv").config();
 
 require('./models/users.model')
+require('./models/transactions.model')
 
 
 mongoose

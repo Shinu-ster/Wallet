@@ -30,7 +30,13 @@ export default function Navbar(){
             Wallet
             </Link>
           </Typography>
-          <Button color="inherit">
+          {
+            localStorage.getItem('at')?          <Button color="inherit">
+            <Link to="/login" style={{textDecoration:"none",color:"white"}}>
+              Log Out
+              </Link>           
+            </Button>:<>
+            <Button color="inherit">
             <Link to="/login" style={{textDecoration:"none",color:"white"}}>
               Login
               </Link>           
@@ -40,6 +46,9 @@ export default function Navbar(){
               Register
               </Link>           
             </Button>
+            </>
+          }
+
         </Toolbar>
       </AppBar>
     </Box>

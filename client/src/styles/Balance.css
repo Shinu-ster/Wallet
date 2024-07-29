@@ -1,0 +1,24 @@
+.container{
+    display:flex;
+    background-color: bisque;
+    height:200px;
+    /* padding:55px; */
+    justify-content: center;
+    align-items:center;
+    gap:350px;
+}
+.income, .total, .expense {
+    text-align: center;
+}
+[class*="_balance"]{
+    font-size: xx-large;
+}
+.total_balance{
+    color:rgba(0, 4, 255, 0.884);
+}
+.income_balance{
+    color:rgba(24, 211, 24, 0.986);
+}
+.expense_balance{
+    color:rgb(253, 32, 32);
+}

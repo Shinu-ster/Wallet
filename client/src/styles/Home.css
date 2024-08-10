@@ -1,0 +1,6 @@
+.modal-container{
+    display:flex;
+    justify-content: center;
+    gap:720px;
+    margin-top:50px;
+}

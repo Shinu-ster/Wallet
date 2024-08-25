@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
 const addIncome = async (req, res) => {
-  const { amount, remark, transaction_type } = req.body;
+  const { amount, remark} = req.body;
   const Users = mongoose.model("users");
   const Transactions = mongoose.model("transactions");
 
   try {
-    if (!amount || !remark || !transaction_type)
-      throw "Please enter amount and remark and transaction";
+    if(!amount) throw "Please enter amount";
+    if(!remark) throw "Please enter remark";
     if (amount <= 0) throw "Please enter valid amount";
     if (remark.length < 2) throw "Remark should atleast be 2 character long";
   } catch (error) {
@@ -23,7 +23,7 @@ const addIncome = async (req, res) => {
       amount: amount,
       remark: remark,
       user_id: req.user._id,
-      transaction_type,
+      transaction_type:"income",
     });
     await Users.updateOne(
       {
@@ -41,7 +41,7 @@ const addIncome = async (req, res) => {
   } catch (e) {
     res.status(400).json({
       status: "Failed",
-      message: error.message,
+      message: e.message,
     });
     return;
   }

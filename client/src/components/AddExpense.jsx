@@ -16,11 +16,13 @@ const style = {
 };
 
 const validationSchema = yup.object({
-  expense: yup
+  amount: yup
     .number()
     .typeError("Amount must be a number")
     .required("Amount is required"),
+  remark: yup.string().required("Remark is required"),
 });
+
 
 export default function AddExpense() {
   const [open, setOpen] = useState(false);
@@ -30,12 +32,31 @@ export default function AddExpense() {
 
   const formik = useFormik({
     initialValues: {
-      expense: "",
+      amount: "",
+      remark: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log("Submitted value:", values.expense); // Corrected to 'values.expense'
-      handleClose(); 
+    onSubmit: async (values) => {
+      console.log("Submitted value:", values.amount);
+      console.log("Submitted value:", values.remark); // Corrected to 'values.expense'
+      try {
+        const response = await fetch("http://localhost:8000/expense/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("at")}`,
+          },
+          body: JSON.stringify(values),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          alert(JSON.stringify(data.status));
+          console.log("Added Expense", JSON.stringify(data));
+        }
+      } catch (error) {
+        console.log("Adding expenes error", error);
+      }
+      handleClose();
     },
   });
 
@@ -56,13 +77,26 @@ export default function AddExpense() {
             <TextField
               label="Amount"
               variant="standard"
-              id="expense"
-              name="expense"  // Add the name attribute
-              value={formik.values.expense}
+              id="amount"
+              name="amount" // Add the name attribute
+              value={formik.values.amount}
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}  // Add the onBlur event
-              error={formik.touched.expense && Boolean(formik.errors.expense)}
-              helperText={formik.touched.expense && formik.errors.expense}
+              onBlur={formik.handleBlur} // Add the onBlur event
+              error={formik.touched.amount && Boolean(formik.errors.amount)}
+              helperText={formik.touched.amount && formik.errors.amount}
+              fullWidth
+              sx={{ mt: 2 }}
+            />
+            <TextField
+              label="Remark"
+              variant="standard"
+              name="remark"
+              id="remark"
+              value={formik.values.remark}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.remark && Boolean(formik.errors.remark)}
+              helperText={formik.touched.remark && formik.errors.remark}
               fullWidth
               sx={{ mt: 2 }}
             />

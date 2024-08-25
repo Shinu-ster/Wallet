@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const addExpense = async(req,res)=>{
 
-    const {amount,remark,transaction_type} = req.body;
+    const {amount,remark} = req.body;
     const Users = mongoose.model("users");
     const Transactions = mongoose.model("transactions");
 
@@ -24,7 +24,7 @@ const addExpense = async(req,res)=>{
           amount: amount,
           remark: remark,
           user_id: req.user._id,
-          transaction_type,
+          transaction_type:"expense",
         });
         await Users.updateOne(
           {

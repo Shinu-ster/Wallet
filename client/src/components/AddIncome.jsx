@@ -1,8 +1,7 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
-import {  useState } from "react";
+import { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
-
 
 const style = {
   position: "absolute",
@@ -16,26 +15,48 @@ const style = {
   p: 4,
 };
 const validationSchema = yup.object({
-  income:yup.number().typeError("Amount must be a number").required("Amount is required"),
-  remark:yup.string().required("Remarks is reqiured"),
-})
+  income: yup
+    .number()
+    .typeError("Amount must be a number")
+    .required("Amount is required"),
+  remark: yup.string().required("Remarks is reqiured"),
+});
 export default function AddIncome() {
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
   const [open, setOpen] = useState(false);
 
-
   const formik = useFormik({
-    initialValues:{
-      income:"",
-      remark:"",
-    },validationSchema:validationSchema,
-    onSubmit:(values)=>{
-      console.log("Submitted income",values.income);
-      console.log("submited remark",values.remark)
+    initialValues: {
+      amount: "",
+      remark: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      console.log("Submitted income", values.amount);
+      console.log("submited remark", values.remark);
+      console.log(localStorage.getItem('at'))
+      try {
+        const response = await fetch("http://localhost:8000/income/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem('at')}`
+          },
+          
+          body: JSON.stringify(values),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          alert(JSON.stringify(data.status));
+          console.log("Added income", JSON.stringify(data));
+        }
+      } catch (error) {
+        console.log("Adding income error", error);
+      }
       handleClose();
-    }
-  })
+    },
+  });
 
   return (
     <>
@@ -51,35 +72,35 @@ export default function AddIncome() {
             Add Income
           </Typography>
           <form onSubmit={formik.handleSubmit}>
-          <TextField
-            label="Amount"
-            variant="standard"
-            name="income"
-            id="income"
-            value={formik.values.income}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.income && Boolean(formik.errors.income)}
-            helperText={formik.touched.income && formik.errors.income}
-            fullWidth
-            sx={{ mt: 2 }}
-          />
-          <TextField
-            label="Remark"
-            variant="standard"
-            name="remark"
-            id="remark"
-            value={formik.values.remark}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.remark && Boolean(formik.errors.remark)}
-            helperText={formik.touched.remark && formik.errors.remark}
-            fullWidth
-            sx={{ mt: 2 }}
-          />
-          <Button type="submit" sx={{ mt: 2 }}>
-            Submit
-          </Button>
+            <TextField
+              label="Amount"
+              variant="standard"
+              name="amount"
+              id="amount"
+              value={formik.values.amount}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.amount && Boolean(formik.errors.amount)}
+              helperText={formik.touched.amount && formik.errors.amount}
+              fullWidth
+              sx={{ mt: 2 }}
+            />
+            <TextField
+              label="Remark"
+              variant="standard"
+              name="remark"
+              id="remark"
+              value={formik.values.remark}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.remark && Boolean(formik.errors.remark)}
+              helperText={formik.touched.remark && formik.errors.remark}
+              fullWidth
+              sx={{ mt: 2 }}
+            />
+            <Button type="submit" sx={{ mt: 2 }}>
+              Submit
+            </Button>
           </form>
         </Box>
       </Modal>
